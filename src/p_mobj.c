@@ -4231,6 +4231,34 @@ static void P_GenericBossThinker(mobj_t *mobj)
 	}
 }
 
+// AI for first Serka boss.
+static void P_SerkaBoss1Thinker(mobj_t *mobj)
+{
+	if (mobj->state->nextstate == mobj->info->spawnstate && mobj->tics == 1)
+		mobj->flags2 &= ~MF2_FRET;
+
+	if (!mobj->target || !(mobj->target->flags & MF_SHOOTABLE))
+	{
+		if (mobj->health <= 0)
+			return;
+
+		// look for a new target
+		if (P_BossTargetPlayer(mobj, false) && mobj->info->seesound)
+			S_StartSound(mobj, mobj->info->seesound);
+
+		return;
+	}
+
+	// Don't call A_ functions here, let the SOC do the AI!
+
+	if (mobj->state == &states[mobj->info->meleestate]
+		|| (mobj->state == &states[mobj->info->missilestate]
+		&& mobj->health > mobj->info->damage))
+	{
+		mobj->angle = R_PointToAngle2(mobj->x, mobj->y, mobj->target->x, mobj->target->y);
+	}
+}
+
 // AI for the first boss.
 static void P_Boss1Thinker(mobj_t *mobj)
 {

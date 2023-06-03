@@ -69,7 +69,7 @@ const INT32 gcl_movement[num_gcl_movement] = {
 	GC_FORWARD, GC_BACKWARD, GC_STRAFELEFT, GC_STRAFERIGHT
 };
 
-const INT32 gcl_camera[num_gcl_camera] = {
+/*const INT32 gcl_camera[num_gcl_camera] = {
 	GC_TURNLEFT, GC_TURNRIGHT
 };
 
@@ -77,7 +77,7 @@ const INT32 gcl_movement_camera[num_gcl_movement_camera] = {
 	GC_FORWARD, GC_BACKWARD, GC_STRAFELEFT, GC_STRAFERIGHT,
 	GC_TURNLEFT, GC_TURNRIGHT
 };
-
+*/
 const INT32 gcl_jump[num_gcl_jump] = { GC_JUMP };
 
 const INT32 gcl_spin[num_gcl_spin] = { GC_SPIN };

@@ -4353,7 +4353,7 @@ static boolean F_GetTextPromptTutorialTag(char *tag, INT32 length)
 
 	if (!strncmp(tag, "TAM", 3)) // Movement
 		gcs = G_GetControlScheme(gamecontrol, gcl_movement, num_gcl_movement);
-	else if (!strncmp(tag, "TAC", 3)) // Camera
+	/*else if (!strncmp(tag, "TAC", 3)) // Camera
 	{
 		// Check for gcl_movement so we can differentiate between FPS and Platform schemes.
 		gcs = G_GetControlScheme(gamecontrol, gcl_movement, num_gcl_movement);
@@ -4361,9 +4361,9 @@ static boolean F_GetTextPromptTutorialTag(char *tag, INT32 length)
 			gcs = G_GetControlScheme(gamecontrol, gcl_camera, num_gcl_camera);
 		if (gcs == gcs_fps && !cv_usemouse.value)
 			gcs = gcs_platform; // Platform (arrow) scheme is stand-in for no mouse
-	}
-	else if (!strncmp(tag, "TAD", 3)) // Movement and Camera
-		gcs = G_GetControlScheme(gamecontrol, gcl_movement_camera, num_gcl_movement_camera);
+	}*/
+	//else if (!strncmp(tag, "TAD", 3)) // Movement and Camera
+		//gcs = G_GetControlScheme(gamecontrol, gcl_movement_camera, num_gcl_movement_camera);
 	else if (!strncmp(tag, "TAJ", 3)) // Jump
 		gcs = G_GetControlScheme(gamecontrol, gcl_jump, num_gcl_jump);
 	else if (!strncmp(tag, "TAS", 3)) // Spin
