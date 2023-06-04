@@ -46,6 +46,8 @@
 // Thok camera snap (ctrl-f "chalupa")
 #include "g_input.h"
 
+#define LEVEL_UP_RING_COUNT 10
+
 #ifdef HW3SOUND
 #include "hardware/hw3sound.h"
 #endif
@@ -1182,51 +1184,95 @@ boolean P_PlayerCanDamage(player_t *player, mobj_t *thing)
 //
 // Gives rings to the player, and does any special things required.
 // Call this function when you want to increment the player's health.
+//Also test of level up system, with using rings for now.
 //
 
 void P_GivePlayerRings(player_t *player, INT32 num_rings)
 {
-	if (!player)
-		return;
+if (!player)
+return;
 
-	if ((player->bot == BOT_2PAI || player->bot == BOT_2PHUMAN) && player->botleader)
-		player = player->botleader;
+if ((player->bot == BOT_2PAI || player->bot == BOT_2PHUMAN) && player->botleader)
+    player = player->botleader;
 
-	if (!player->mo)
-		return;
+if (!player->mo)
+    return;
 
-	player->rings += num_rings;
+player->rings += num_rings;
 
-	player->totalring += num_rings;
+player->totalring += num_rings;
 
-	// Can only get up to 9999 rings, sorry!
-	if (player->rings > 9999)
-		player->rings = 9999;
-	else if (player->rings < 0)
-		player->rings = 0;
+// Can only get up to 9999 rings, sorry!
+if (player->rings > 9999)
+    player->rings = 9999;
+else if (player->rings < 0)
+    player->rings = 0;
 
-	// Now extra life bonuses are handled here instead of in P_MovePlayer, since why not?
-	if (!ultimatemode && !modeattacking && !G_IsSpecialStage(gamemap) && G_GametypeUsesLives() && player->lives != INFLIVES)
-	{
-		INT32 gainlives = 0;
+// Now extra life bonuses are handled here instead of in P_MovePlayer, since why not?
+if (!ultimatemode && !modeattacking && !G_IsSpecialStage(gamemap) && G_GametypeUsesLives() && player->lives != INFLIVES)
+{
+    INT32 gainlives = 0;
 
-		while (player->xtralife < maxXtraLife && player->rings >= 100 * (player->xtralife+1))
-		{
-			++gainlives;
-			++player->xtralife;
-		}
+    while (player->xtralife < maxXtraLife && player->rings >= 100 * (player->xtralife + 1))
+    {
+        ++gainlives;
+        ++player->xtralife;
+    }
 
-		if (gainlives)
-		{
-			player->lives += gainlives;
-			if (player->lives > 99)
-				player->lives = 99;
-			else if (player->lives < 1)
-				player->lives = 1;
+    if (gainlives)
+    {
+        player->lives += gainlives;
+        if (player->lives > 99)
+            player->lives = 99;
+        else if (player->lives < 1)
+            player->lives = 1;
 
-			P_PlayLivesJingle(player);
-		}
-	}
+        P_PlayLivesJingle(player);
+    }
+}
+}
+void P_LevelUp(player_t *player)
+{
+    player->level++;
+    player->exp = 0; // Reset experience points to 0
+    CONS_Printf("You leveled up!\n");
+}
+
+// RPG Player EXP giving and handling etc.
+void P_GivePlayerExp(player_t *player, INT32 num_exp)
+{
+    if (!player)
+        return;
+
+    if ((player->bot == BOT_2PAI || player->bot == BOT_2PHUMAN) && player->botleader)
+        player = player->botleader;
+
+    if (!player->mo)
+        return;
+
+    player->exp += num_exp;
+
+    // Check if player has leveled up
+    while (player->exp >= P_GetExpRequiredForLevel(player->level + 1))
+    {
+        P_LevelUp(player);
+    }
+}
+
+//RPG - Calculation of required EXP for each level
+void P_GetExpRequiredForLevel(INT32 level)
+{
+    if (level <= 1)
+        return 0;
+
+    INT32 exp_required = 10; // Starting exp required to reach level 2
+
+    for (INT32 i = 2; i <= level; ++i)
+    {
+        exp_required = (INT32)(exp_required * 1.5); // Increase exp required by 1.5x of last value
+    }
+
+    return exp_required;
 }
 
 void P_GivePlayerSpheres(player_t *player, INT32 num_spheres)
@@ -10563,7 +10609,7 @@ boolean P_SpectatorJoinGame(player_t *player)
 }
 
 // the below is first person only, if you're curious. check out P_CalcChasePostImg in p_mobj.c for chasecam
-static void P_CalcPostImg(player_t *player)
+void P_CalcPostImg(player_t *player)
 {
 	sector_t *sector = player->mo->subsector->sector;
 	postimg_t *type;

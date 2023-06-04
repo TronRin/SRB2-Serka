@@ -17,6 +17,7 @@
 
 #include "doomdef.h"
 #include "doomstat.h"
+#include "d_player.h"
 #include "r_local.h"
 #include "st_stuff.h" // need ST_HEIGHT
 #include "i_video.h"
@@ -26,6 +27,20 @@
 #include "z_zone.h"
 #include "console.h" // Until buffering gets finished
 #include "libdivide.h" // used by NPO2 tilted span functions
+#include "p_local.h"
+void R_DrawPlayerLevel(player_t *player)
+{
+    char level_str[16];
+    sprintf(level_str, "Level: %d", player->level);
+
+    // Draw a text box at position (0, 0) with a width of 16 and a height of 1
+    M_DrawTextBox(0, 0, 16, 1);
+
+    // Draw the level string inside the text box
+    // The coordinates (8, 8) are just an example, you might need to adjust them to properly position the text inside the box
+    V_DrawString(8, 8, 0, level_str);
+}
+
 
 #ifdef HWRENDER
 #include "hardware/hw_main.h"

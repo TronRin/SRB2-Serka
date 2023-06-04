@@ -126,6 +126,8 @@ void CV_UpdateCam2Dist(void);
 extern fixed_t t_cam_dist, t_cam_height, t_cam_rotate;
 extern fixed_t t_cam2_dist, t_cam2_height, t_cam2_rotate;
 
+
+INT32 P_GetPlayerLevel(player_t *player); //RPG Player LEvel stuff... for now.
 INT32 P_GetPlayerControlDirection(player_t *player);
 void P_AddPlayerScore(player_t *player, UINT32 amount);
 void P_StealPlayerScore(player_t *player, UINT32 amount);

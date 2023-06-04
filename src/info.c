@@ -4176,7 +4176,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		0,              // damage
 		sfx_None,       // activesound
 		MF_ENEMY|MF_SPECIAL|MF_SHOOTABLE, // flags
-		S_NULL          // raisestate
+		S_NULL,         // raisestate
+		.exp = 5,		//exp for given enemy
 	},
 
 	{           // MT_REDCRAWLA
@@ -4203,7 +4204,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		0,              // damage
 		sfx_None,       // activesound
 		MF_ENEMY|MF_SPECIAL|MF_SHOOTABLE, // flags
-		S_NULL          // raisestate
+		S_NULL,         // raisestate	
+		.exp = 10,		//exp for given enemy
 	},
 
 	{           // MT_GFZFISH
@@ -4230,7 +4232,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		1,              // damage
 		sfx_None,       // activesound
 		MF_ENEMY|MF_SPECIAL|MF_SHOOTABLE, // flags
-		S_NULL          // raisestate
+		S_NULL         // raisestate
+		.exp = 2,		//exp for given enemy
 	},
 
 	{           // MT_GOLDBUZZ

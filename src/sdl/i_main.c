@@ -17,11 +17,17 @@
 /// \file
 /// \brief Main program, simply calls D_SRB2Main and D_SRB2Loop, the high level loop.
 
+
 #include "../doomdef.h"
 #include "../m_argv.h"
 #include "../d_main.h"
 #include "../m_misc.h"/* path shit */
 #include "../i_system.h"
+#include "../g_game.h"
+#include "../r_draw.h"
+#include "../p_local.h"
+#include "../i_video.h"
+#include <stdio.h>
 
 #if defined (__GNUC__) || defined (__unix__)
 #include <unistd.h>
@@ -32,6 +38,7 @@
 #endif
 
 #include "time.h" // For log timestamps
+int srb2_main(void);
 
 #ifdef HAVE_SDL
 
@@ -266,3 +273,35 @@ int main(int argc, char **argv)
 	return 0;
 }
 #endif
+int srb2_main(void)
+{
+// startup SRB2
+printf("Setting up SRB2 (fo' real)…");
+D_SRB2Main();
+printf("Entering main game loop…");
+
+// Initialize game variables
+
+player_t *player = &players[consoleplayer];
+
+// Main game loop
+while (1)
+{
+    // Handle input
+    D_ProcessEvents();
+
+    // Update game state
+    G_Ticker(true);
+
+    // Draw game
+	R_RenderPlayerView(&players[consoleplayer]);
+	R_DrawPlayerLevel(&players[consoleplayer]);
+    I_FinishUpdate();
+
+    // Sleep to limit frame rate
+    I_WaitVBL(1);
+}
+
+// Control should never reach here
+return 0;
+}

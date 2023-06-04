@@ -3863,6 +3863,14 @@ void A_Explode(mobj_t *actor)
 		return;
 
 	P_RadiusAttack(actor, actor->target, actor->info->damage, locvar1, true);
+
+	    // RPG - Give the player rings and experience points for defeating the enemy
+    if (actor->target && actor->target->player)
+    {
+        player_t *player = actor->target->player;
+        P_GivePlayerRings(player, actor->info->spawnhealth);
+        P_GivePlayerExp(player, actor->info->exp);
+    }
 }
 
 static mobj_t *P_FindBossFlyPoint(mobj_t *mo, INT32 tag)
