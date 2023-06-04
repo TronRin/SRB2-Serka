@@ -1,0 +1,8 @@
+{
+    "easycode.maxTokens": 2000,
+    "easycode.copyOnClick": false,
+    "easycode.temperature": 0.1,
+    "files.associations": {
+        "z_zone.h": "c"
+    }
+}

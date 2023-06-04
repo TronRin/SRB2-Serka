@@ -36,6 +36,7 @@
 #include "z_zone.h"
 #include "w_wad.h"
 #include "hu_stuff.h"
+
 // We need to affect the NiGHTS hud
 #include "st_stuff.h"
 #include "lua_script.h"
@@ -46,7 +47,7 @@
 // Thok camera snap (ctrl-f "chalupa")
 #include "g_input.h"
 
-#define LEVEL_UP_RING_COUNT 10
+#define MAX_EXP 1000
 
 #ifdef HW3SOUND
 #include "hardware/hw3sound.h"
@@ -1231,11 +1232,22 @@ if (!ultimatemode && !modeattacking && !G_IsSpecialStage(gamemap) && G_GametypeU
     }
 }
 }
-void P_LevelUp(player_t *player)
+
+                                                                                                
+//RPG - Calculation of required EXP for each level
+INT32 P_GetExpRequiredForLevel(INT32 level)
 {
-    player->level++;
-    player->exp = 0; // Reset experience points to 0
-    CONS_Printf("You leveled up!\n");
+    if (level <= 1)
+        return 0;
+
+    INT32 exp_required = 10; // Starting exp required to reach level 2
+
+    for (INT32 i = 2; i <= level; ++i)
+    {
+        exp_required = (INT32)(exp_required * 1.5); // Increase exp required by 1.5x of last value
+    }
+
+    return exp_required;
 }
 
 // RPG Player EXP giving and handling etc.
@@ -1250,29 +1262,42 @@ void P_GivePlayerExp(player_t *player, INT32 num_exp)
     if (!player->mo)
         return;
 
-    player->exp += num_exp;
+    player->mo->exp += num_exp;
 
     // Check if player has leveled up
-    while (player->exp >= P_GetExpRequiredForLevel(player->level + 1))
+    while (player->mo->exp >= P_GetExpRequiredForLevel(player->level + 1))
     {
         P_LevelUp(player);
+		// Call RPG level up function
+    	P_LevelUp(player);
+		CONS_Printf("You leveled up!\n");
     }
 }
 
-//RPG - Calculation of required EXP for each level
-void P_GetExpRequiredForLevel(INT32 level)
+// RPG Player Leveling up
+void P_LevelUp(player_t *player)
 {
-    if (level <= 1)
-        return 0;
+    if (!player)
+        return;
 
-    INT32 exp_required = 10; // Starting exp required to reach level 2
+    if ((player->bot == BOT_2PAI || player->bot == BOT_2PHUMAN) && player->botleader)
+        player = player->botleader;
 
-    for (INT32 i = 2; i <= level; ++i)
+    if (!player->mo)
+        return;
+
+    player->level++;
+	CONS_Printf("You leveled up!\n");
+
+    // Check if player has maxed out EXP
+    if (player->level >= MAX_EXP)
     {
-        exp_required = (INT32)(exp_required * 1.5); // Increase exp required by 1.5x of last value
+        player->level = MAX_EXP;
+        return;
     }
 
-    return exp_required;
+    // Reset skill points
+    player->exp = 0;
 }
 
 void P_GivePlayerSpheres(player_t *player, INT32 num_spheres)

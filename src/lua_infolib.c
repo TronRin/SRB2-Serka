@@ -1241,6 +1241,8 @@ static int mobjinfo_set(lua_State *L)
 		info->flags = (INT32)luaL_checkinteger(L, 3);
 	else if (fastcmp(field,"raisestate"))
 		info->raisestate = luaL_checkinteger(L, 3);
+	else if (fastcmp(field,"exp"))
+		info->exp = luaL_checkinteger(L, 3);
 	else {
 		lua_getfield(L, LUA_REGISTRYINDEX, LREG_EXTVARS);
 		I_Assert(lua_istable(L, -1));

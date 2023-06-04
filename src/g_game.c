@@ -48,7 +48,6 @@
 #include "m_cond.h" // condition sets
 #include "lua_script.h"
 #include "r_fps.h" // frame interpolation/uncapped
-
 #include "lua_hud.h"
 
 gameaction_t gameaction;

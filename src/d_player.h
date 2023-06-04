@@ -574,7 +574,7 @@ typedef struct player_s
 
 	//RPG Stuff
 	INT32 level;
-	INT32 exp;
+	mobj_t *exp;
 #ifdef HWRENDER
 	fixed_t fovadd; // adjust FOV for hw rendering
 #endif

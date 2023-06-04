@@ -4177,7 +4177,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		sfx_None,       // activesound
 		MF_ENEMY|MF_SPECIAL|MF_SHOOTABLE, // flags
 		S_NULL,         // raisestate
-		.exp = 5,		//exp for given enemy
+		5,		//exp for given enemy
 	},
 
 	{           // MT_REDCRAWLA
@@ -4204,8 +4204,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		0,              // damage
 		sfx_None,       // activesound
 		MF_ENEMY|MF_SPECIAL|MF_SHOOTABLE, // flags
-		S_NULL,         // raisestate	
-		.exp = 10,		//exp for given enemy
+		S_NULL,         // raisestate
+		10,		//exp for given enemy
 	},
 
 	{           // MT_GFZFISH
@@ -4232,8 +4232,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		1,              // damage
 		sfx_None,       // activesound
 		MF_ENEMY|MF_SPECIAL|MF_SHOOTABLE, // flags
-		S_NULL         // raisestate
-		.exp = 2,		//exp for given enemy
+		S_NULL,         // raisestate
+		2,		//exp for given enemy
 	},
 
 	{           // MT_GOLDBUZZ
@@ -4260,7 +4260,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		0,              // damage
 		sfx_None,       // activesound
 		MF_SLIDEME|MF_ENEMY|MF_SPECIAL|MF_SHOOTABLE|MF_NOGRAVITY, // flags
-		S_NULL          // raisestate
+		S_NULL,          // raisestate
+		10,		//exp for given enemy
 	},
 
 	{           // MT_REDBUZZ
@@ -4287,7 +4288,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		0,              // damage
 		sfx_None,       // activesound
 		MF_SLIDEME|MF_ENEMY|MF_SPECIAL|MF_SHOOTABLE|MF_NOGRAVITY, // flags
-		S_NULL          // raisestate
+		S_NULL,          // raisestate
+		15,		//exp for given enemy
 	},
 
 	{           // MT_JETTBOMBER
@@ -4314,7 +4316,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		0,              // damage
 		sfx_None,       // activesound
 		MF_SLIDEME|MF_ENEMY|MF_SPECIAL|MF_SHOOTABLE|MF_NOGRAVITY, // flags
-		(statenum_t)MT_MINE// raisestate
+		(statenum_t)MT_MINE,// raisestate
+		20,		//exp for given enemy
 	},
 
 	{           // MT_JETTGUNNER
@@ -4341,7 +4344,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		0,              // damage
 		sfx_None,       // activesound
 		MF_SLIDEME|MF_ENEMY|MF_SPECIAL|MF_SHOOTABLE|MF_NOGRAVITY, // flags
-		(statenum_t)MT_JETTBULLET// raisestate
+		(statenum_t)MT_JETTBULLET,// raisestate
+		25,		//exp for given enemy
 	},
 
 	{           // MT_CRAWLACOMMANDER
@@ -4368,7 +4372,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		0,              // damage
 		sfx_s3k5d,      // activesound
 		MF_SLIDEME|MF_ENEMY|MF_SPECIAL|MF_SHOOTABLE, // flags
-		S_NULL          // raisestate
+		S_NULL,          // raisestate
+		30,		//exp for given enemy
 	},
 
 	{           // MT_DETON
@@ -4395,7 +4400,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		1,              // damage
 		sfx_None,       // activesound
 		MF_ENEMY|MF_SHOOTABLE|MF_NOGRAVITY|MF_MISSILE, // flags
-		(statenum_t)ANG15// raisestate: largest angle to turn in one tic (here, 15 degrees)
+		(statenum_t)ANG15,// raisestate: largest angle to turn in one tic (here, 15 degrees)
+		30,		//exp for given enemy
 	},
 
 	{           // MT_SKIM
@@ -4422,7 +4428,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		0,              // damage
 		sfx_None,       // activesound
 		MF_ENEMY|MF_SPECIAL|MF_NOGRAVITY|MF_SHOOTABLE, // flags
-		(statenum_t)MT_MINE// raisestate
+		(statenum_t)MT_MINE,// raisestate
+		40,		//exp for given enemy
 	},
 
 	{           // MT_TURRET
@@ -4449,7 +4456,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		1,              // damage
 		sfx_trpowr,     // activesound
 		MF_NOBLOCKMAP,  // flags
-		S_NULL          // raisestate
+		S_NULL,          // raisestate
+		50,		//exp for given enemy
 	},
 
 	{           // MT_POPUPTURRET
@@ -4476,7 +4484,8 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		0,              // damage
 		sfx_None,       // activesound
 		MF_ENEMY|MF_SPECIAL|MF_SHOOTABLE, // flags
-		(statenum_t)MT_JETTBULLET// raisestate
+		(statenum_t)MT_JETTBULLET,// raisestate
+		65,		//exp for given enemy
 	},
 
 	{           // MT_SPINCUSHION
