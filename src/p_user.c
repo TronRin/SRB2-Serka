@@ -13021,6 +13021,82 @@ boolean P_PlayerShouldUseSpinHeight(player_t *player)
 // Define a custom struct for player information
 typedef struct
 {
+int exp; // Experience points
+int level; // Player level
+// Add any other player information variables here
+} playerinfo_t;
+
+// RPG - Calculation of required EXP for each level
+int P_GetExpRequiredForLevel(int level)
+{
+if (level <= 1)
+return 0;
+
+int exp_required = 10; // Starting exp required to reach level 2
+
+for (int i = 2; i <= level; ++i)
+{
+    exp_required = (int)(exp_required * 2); // Increase exp required by 2x of last value
+}
+
+return exp_required;
+}
+
+// RPG - Give Player the sweeet exp!
+void P_GivePlayerExp(mobj_t *player, mobj_t *enemy)
+{
+if (!enemy || !enemy->info || !(enemy->flags & MF_ENEMY))
+return;
+
+// Retrieve the experience value from the mobjinfo_t struct
+int enemy_exp = enemy->info->exp;
+playerinfo_t *player_info = (playerinfo_t *)player->info;
+int player_exp = player_info->exp;
+
+// Give the player the appropriate amount of experience
+player_exp += enemy_exp;
+
+// Check if player has leveled up
+while (player_exp >= P_GetExpRequiredForLevel(player_info->level + 1))
+{
+    // Update player's level and experience value
+    player_info->level++;
+    player_exp -= P_GetExpRequiredForLevel(player_info->level);
+}
+
+// Update player's experience value
+player_info->exp = player_exp;
+}
+
+
+// RPG Player Leveling up
+/*
+void P_LevelUp(mobj_t *player)
+{
+	if (!player || !(player->flags & MT_PLAYER))
+		return;
+
+	// Check if player has maxed out level
+	{
+    	player->level = MAX_LEVEL;
+    	CONS_Printf("Maxed out level!!!\n");
+    	return;
+	}
+*/
+	// Increment player's level
+
+	// Reset exp points
+//	playerinfo_t *player_info = (playerinfo_t *)player->info;
+//	player_info->exp = 0;
+//	CONS_Printf("Reseting exp points!\n");
+
+
+//////////////TEST CODE DON'T ENABLE//////////////////
+
+/*
+// Define a custom struct for player information
+typedef struct
+{
     unsigned int exp; // Experience points
     unsigned int level; // Player level
     // Add any other player information variables here
@@ -13047,7 +13123,8 @@ void P_GivePlayerExp(void* player, void* enemy)
     if (!e || !e->info || !(e->flags & MF_ENEMY))
         return;
 
-    unsigned int exp_given = (unsigned int)(e->info->exp * (p->info->level + 1));
+    // Adjusted formula to consider the enemy's exp value
+    unsigned int exp_given = (unsigned int)(e->info->exp);
 
     playerinfo_t *player_info = (playerinfo_t *)&p->info;
     player_info->exp += exp_given;
@@ -13066,6 +13143,7 @@ void P_GivePlayerExp(void* player, void* enemy)
         CONS_Printf("Player has leveled up to level %d!\n", player_info->level);
     }
 }
+
 
 // Define a function to check the player's level and experience points
 void P_CheckPlayerLevel(void* player) {
@@ -13093,8 +13171,9 @@ void P_PlayerDeath(void* player)
 
     CONS_Printf("Player has died!\n");
 }
-
+*/
 // Define a function to handle player damage
+/*
 void P_PlayerHit(void* player, void* enemy)
 {
     mobj_t *p = (mobj_t*)player;
@@ -13113,3 +13192,4 @@ void P_PlayerHit(void* player, void* enemy)
 
     CONS_Printf("Player received %d damage from enemy! WHOA!!\n", damage);
 }
+*/

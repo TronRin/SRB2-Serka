@@ -34,14 +34,15 @@
 #define MAX_EXP 1000
 #define MAX_LEVEL 100
 
-/*
 //RPG Getting the Exp for a given Level
-unsigned int P_GetExpRequiredForLevel(unsigned int level);
- //RPG Experience for leveling up
+int P_GetExpRequiredForLevel(int level);
+//RPG Experience for leveling up
 void P_GivePlayerExp(mobj_t *player, mobj_t *enemy);
 //RPG Player receives Experience
 void P_LevelUp(mobj_t *player); //RPG Player Levels Up from Experience
 //RPG Checking Player Level
+/*
+//R
 void P_CheckPlayerLevel(mobj_t *player);
 //RPG Handle Player Damage
 void P_PlayerHit(mobj_t *player, mobj_t *enemy)
