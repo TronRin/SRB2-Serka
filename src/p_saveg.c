@@ -1571,6 +1571,8 @@ typedef enum
 	MD2_SPRITEXOFFSET = 1<<20,
 	MD2_SPRITEYOFFSET = 1<<21,
 	MD2_FLOORSPRITESLOPE = 1<<22,
+	MD2_EXP = 1<<23,
+	MD2_LEVEL = 1<<24
 } mobj_diff2_t;
 
 typedef enum
@@ -1752,6 +1754,12 @@ static void SaveMobjThinker(const thinker_t *th, const UINT8 type)
 		diff |= MD_REDFLAG;
 	if (mobj == blueflag)
 		diff |= MD_BLUEFLAG;
+
+	//RPG save shite
+	if (mobj->exp)
+		diff2 |= MD2_EXP;
+	if (mobj->level)
+		diff2 |= MD2_LEVEL;
 
 	if (mobj->cusval)
 		diff2 |= MD2_CUSVAL;

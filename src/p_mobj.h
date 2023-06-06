@@ -389,7 +389,8 @@ typedef struct mobj_s
 	INT32 extravalue2;
 
 	//RPG Values
-	INT32 exp; // player's experience points
+	int exp; // player's experience points
+	int level; // player's level
 
 	// Custom values are not to be altered by us!
 	// They are for SOCs to store things in.

@@ -29,6 +29,8 @@
 // as commands per game tick.
 #include "d_ticcmd.h"
 
+#include "info.h"
+
 // Extra abilities/settings for skins (combinable stuff)
 typedef enum
 {
@@ -354,7 +356,11 @@ typedef struct botmem_s
 typedef struct player_s
 {
 	mobj_t *mo;
-
+	// RPG 
+	
+	INT32 level;
+	mobj_t *exp;
+	
 	// Caveat: ticcmd_t is ATTRPACK! Be careful what precedes it.
 	ticcmd_t cmd;
 
@@ -572,9 +578,6 @@ typedef struct player_s
 	tic_t jointime; // Timer when player joins game to change skin/color
 	tic_t quittime; // Time elapsed since user disconnected, zero if connected
 
-	//RPG Stuff
-	INT32 level;
-	mobj_t *exp;
 #ifdef HWRENDER
 	fixed_t fovadd; // adjust FOV for hw rendering
 #endif

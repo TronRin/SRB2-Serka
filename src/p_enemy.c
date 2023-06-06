@@ -27,6 +27,8 @@
 #include "z_zone.h"
 #include "lua_hook.h"
 #include "m_cond.h" // SECRET_SKIN
+#include "rpg.h"
+#include "info.h"
 
 #ifdef HW3SOUND
 #include "hardware/hw3sound.h"
@@ -3863,14 +3865,6 @@ void A_Explode(mobj_t *actor)
 		return;
 
 	P_RadiusAttack(actor, actor->target, actor->info->damage, locvar1, true);
-
-	    // RPG - Give the player rings and experience points for defeating the enemy
-    if (actor->target && actor->target->player)
-    {
-        player_t *player = actor->target->player;
-        P_GivePlayerRings(player, actor->info->spawnhealth);
-        P_GivePlayerExp(player, actor->info->exp);
-    }
 }
 
 static mobj_t *P_FindBossFlyPoint(mobj_t *mo, INT32 tag)
@@ -9843,6 +9837,19 @@ void A_RingDrain(mobj_t *actor)
 	P_GivePlayerRings(player, -min(locvar1, player->rings));
 }
 
+//RPG EXP and level up shit
+
+    // Check if player has maxed out EXP
+    //if (player->level >= MAX_EXP)
+   // {
+   //     player->level = MAX_EXP;
+   //     return;
+   // }
+
+    // Reset skill points
+    //player->exp = 0;
+
+
 // Function: A_SplitShot
 //
 // Description: Shoots 2 missiles that hit next to the player.
@@ -10891,6 +10898,7 @@ void A_SetScale(mobj_t *actor)
 // var1 = Mobj affected: 0 - actor, 1 - target, 2 - tracer
 // var2 = Action: 0 - Damage, 1 - Kill, 2 - Remove
 //
+
 void A_RemoteDamage(mobj_t *actor)
 {
 	INT32 locvar1 = var1;
@@ -10920,21 +10928,25 @@ void A_RemoteDamage(mobj_t *actor)
 
 	if (locvar2 == 1) // Kill mobj!
 	{
-		if (target->player) // players die using P_DamageMobj instead for some reason
-			P_DamageMobj(target, source, source, 1, DMG_INSTAKILL);
-		else
-			P_KillMobj(target, source, source, 0);
+    	if (target->player) // players die using P_DamageMobj instead for some reason
+        P_DamageMobj(target, source, source, 1, DMG_INSTAKILL);
+    else
+    	{
+        P_KillMobj(target, source, source, 0);
+        CONS_Printf("Killed a fucko");
+   		}
 	}
 	else if (locvar2 == 2) // Remove mobj!
 	{
 		if (target->player) //don't remove players!
 			return;
-
-		P_RemoveMobj(target);
+		CONS_Printf("Given EXP");
+		//P_RemoveMobj(target);
 	}
 	else // default: Damage mobj!
 		P_DamageMobj(target, source, source, 1, 0);
 }
+
 
 // Function: A_HomingChase
 //

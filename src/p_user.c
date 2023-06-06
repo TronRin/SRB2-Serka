@@ -36,6 +36,7 @@
 #include "z_zone.h"
 #include "w_wad.h"
 #include "hu_stuff.h"
+#include "math.h"
 
 // We need to affect the NiGHTS hud
 #include "st_stuff.h"
@@ -46,9 +47,8 @@
 #include "m_cheat.h"
 // Thok camera snap (ctrl-f "chalupa")
 #include "g_input.h"
-
-#define MAX_EXP 1000
-
+// RPG stuff
+#include "rpg.h"
 #ifdef HW3SOUND
 #include "hardware/hw3sound.h"
 #endif
@@ -1233,72 +1233,6 @@ if (!ultimatemode && !modeattacking && !G_IsSpecialStage(gamemap) && G_GametypeU
 }
 }
 
-                                                                                                
-//RPG - Calculation of required EXP for each level
-INT32 P_GetExpRequiredForLevel(INT32 level)
-{
-    if (level <= 1)
-        return 0;
-
-    INT32 exp_required = 10; // Starting exp required to reach level 2
-
-    for (INT32 i = 2; i <= level; ++i)
-    {
-        exp_required = (INT32)(exp_required * 1.5); // Increase exp required by 1.5x of last value
-    }
-
-    return exp_required;
-}
-
-// RPG Player EXP giving and handling etc.
-void P_GivePlayerExp(player_t *player, INT32 num_exp)
-{
-    if (!player)
-        return;
-
-    if ((player->bot == BOT_2PAI || player->bot == BOT_2PHUMAN) && player->botleader)
-        player = player->botleader;
-
-    if (!player->mo)
-        return;
-
-    player->mo->exp += num_exp;
-
-    // Check if player has leveled up
-    while (player->mo->exp >= P_GetExpRequiredForLevel(player->level + 1))
-    {
-        P_LevelUp(player);
-		// Call RPG level up function
-    	P_LevelUp(player);
-		CONS_Printf("You leveled up!\n");
-    }
-}
-
-// RPG Player Leveling up
-void P_LevelUp(player_t *player)
-{
-    if (!player)
-        return;
-
-    if ((player->bot == BOT_2PAI || player->bot == BOT_2PHUMAN) && player->botleader)
-        player = player->botleader;
-
-    if (!player->mo)
-        return;
-
-    player->level++;
-	CONS_Printf("You leveled up!\n");
-
-    // Check if player has maxed out EXP
-    if (player->level >= MAX_EXP)
-    {
-        player->level = MAX_EXP;
-        return;
-    }
-
-    // Reset skill points
-    player->exp = 0;
-}
 
 void P_GivePlayerSpheres(player_t *player, INT32 num_spheres)
 {
@@ -10406,12 +10340,12 @@ boolean P_MoveChaseCamera(player_t *player, camera_t *thiscam, boolean resetcall
 	if (!camstill && !resetcalled && !paused)
 		thiscam->angle = R_PointToAngle2(thiscam->x, thiscam->y, viewpointx, viewpointy);
 
-/*
+
 	if (twodlevel || (mo->flags2 & MF2_TWOD))
 		thiscam->angle = angle;
-*/
+
 	// follow the player
-	/*if (player->playerstate != PST_DEAD && (camspeed) != 0)
+	if (player->playerstate != PST_DEAD && (camspeed) != 0)
 	{
 		if (P_AproxDistance(mo->x - thiscam->x, mo->y - thiscam->y) > (checkdist + P_AproxDistance(mo->momx, mo->momy)) * 4
 			|| abs(mo->z - thiscam->z) > checkdist * 3)
@@ -10420,7 +10354,7 @@ boolean P_MoveChaseCamera(player_t *player, camera_t *thiscam, boolean resetcall
 				P_ResetCamera(player, thiscam);
 			return true;
 		}
-	}*/
+	}
 
 	if (twodlevel || (mo->flags2 & MF2_TWOD))
 	{
@@ -13080,4 +13014,102 @@ boolean P_PlayerShouldUseSpinHeight(player_t *player)
 		|| ((player->charflags & (SF_DASHMODE|SF_MACHINE)) == (SF_DASHMODE|SF_MACHINE)
 			&& player->dashmode >= DASHMODE_THRESHOLD && player->mo->state-states == S_PLAY_DASH)
 		|| JUMPCURLED(player));
+}
+
+//RPG RELATED STUFF STARTS HERE!//
+
+// Define a custom struct for player information
+typedef struct
+{
+    unsigned int exp; // Experience points
+    unsigned int level; // Player level
+    // Add any other player information variables here
+} playerinfo_t;
+
+// Define a constant for the maximum level
+//#define MAX_LEVEL 10 //in rpg.h
+
+// Define a function to calculate the experience points required for a given level
+unsigned int P_GetExpRequiredForLevel(unsigned int level)
+{
+    if (level <= 1)
+        return 0;
+    else
+        return (unsigned int)(100 * pow(2, level - 2));
+}
+
+// Define a function to give the player experience points for killing an enemy
+void P_GivePlayerExp(void* player, void* enemy)
+{
+    mobj_t *p = (mobj_t*)player;
+    mobj_t *e = (mobj_t*)enemy;
+
+    if (!e || !e->info || !(e->flags & MF_ENEMY))
+        return;
+
+    unsigned int exp_given = (unsigned int)(e->info->exp * (p->info->level + 1));
+
+    playerinfo_t *player_info = (playerinfo_t *)&p->info;
+    player_info->exp += exp_given;
+
+    while (player_info->exp >= P_GetExpRequiredForLevel(player_info->level + 1))
+    {
+        player_info->level++;
+
+        if (player_info->level >= MAX_LEVEL)
+        {
+            player_info->level = MAX_LEVEL;
+            CONS_Printf("Player has reached maximum level!\n");
+            break;
+        }
+
+        CONS_Printf("Player has leveled up to level %d!\n", player_info->level);
+    }
+}
+
+// Define a function to check the player's level and experience points
+void P_CheckPlayerLevel(void* player) {
+   mobj_t *p = (mobj_t*)player;
+   if (!p || !(p->flags & MT_PLAYER)) return;
+ 
+   playerinfo_t *player_info = (playerinfo_t *)&p->info;
+   
+	CONS_Printf("Level: %d");
+	player_info->level;
+	CONS_Printf("Experience: %d");
+	player_info->exp;
+}
+
+// Define a function to handle player death
+void P_PlayerDeath(void* player)
+{
+    mobj_t *p = (mobj_t*)player;
+    if (!p || !(p->flags & MT_PLAYER))
+        return;
+
+    p->health = 0;
+    p->state = 128;
+    p->tics = 0;
+
+    CONS_Printf("Player has died!\n");
+}
+
+// Define a function to handle player damage
+void P_PlayerHit(void* player, void* enemy)
+{
+    mobj_t *p = (mobj_t*)player;
+    mobj_t *e = (mobj_t*)enemy;
+    if (!p || !e || !(p->flags & MT_PLAYER) || !(e->flags & MF_ENEMY))
+        return;
+
+    int damage = (int)(p->info->damage * (0.5 + (0.5 * p->info->level) / 10.0));
+
+    p->health -= damage;
+
+    if (p->health <= 0)
+    {
+        P_PlayerDeath(p);
+    }
+
+    CONS_Printf("Player received %d damage from enemy! WHOA!!\n", damage);
 }

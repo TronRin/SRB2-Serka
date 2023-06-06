@@ -156,12 +156,11 @@ typedef struct
 }
 mapsearchfreq_t;
 
-void P_LevelUp(player_t *player);
-void P_GivePlayerExp(player_t *player, INT32 num_exp);
+void P_LevelUp(mobj_t *player);
 
 void P_CalcPostImg(player_t *player);
 
-INT32 P_GetExpRequiredForLevel(INT32 level);
+//unsigned int P_GetExpRequiredForLevel(unsigned int level);
 
 INT32 G_FindMap(const char *query, char **foundmapnamep,
 		mapsearchfreq_t **freqp, INT32 *freqc);

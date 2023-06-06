@@ -4095,7 +4095,9 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		MT_THOK,        // damage
 		sfx_None,       // activesound
 		MF_SOLID|MF_SHOOTABLE, // flags
-		(statenum_t)MT_NULL// raisestate
+		(statenum_t)MT_NULL,// raisestate
+		0, //RPG EXP
+		1 //RPG LEVEL
 	},
 
 	{           // MT_TAILSOVERLAY
@@ -4178,6 +4180,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] =
 		MF_ENEMY|MF_SPECIAL|MF_SHOOTABLE, // flags
 		S_NULL,         // raisestate
 		5,		//exp for given enemy
+		S_NULL
 	},
 
 	{           // MT_REDCRAWLA

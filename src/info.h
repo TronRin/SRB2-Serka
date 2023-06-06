@@ -19,6 +19,7 @@
 #include "sounds.h"
 #include "m_fixed.h"
 
+
 // deh_tables.c now has lists for the more named enums! PLEASE keep them up to date!
 // For great modding!!
 
@@ -5151,7 +5152,8 @@ typedef enum mobj_type
 
 	MT_FIRSTFREESLOT,
 	MT_LASTFREESLOT = MT_FIRSTFREESLOT + NUMMOBJFREESLOTS - 1,
-	NUMMOBJTYPES
+	NUMMOBJTYPES,
+//	MF_ENEMY = 0x8000 // New bit flag for enemy mobj types
 } mobjtype_t;
 
 typedef struct
@@ -5180,7 +5182,8 @@ typedef struct
 	sfxenum_t activesound;
 	UINT32 flags;
 	statenum_t raisestate;
-	INT32 exp; //rpg exp
+	int exp; //rpg exp
+	int level; //rpg level for MT_Player only... for now.
 } mobjinfo_t;
 
 extern mobjinfo_t mobjinfo[NUMMOBJTYPES];

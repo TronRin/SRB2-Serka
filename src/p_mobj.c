@@ -36,6 +36,7 @@
 #include "p_slopes.h"
 #include "f_finale.h"
 #include "m_cond.h"
+#include "rpg.h"
 
 static CV_PossibleValue_t CV_BobSpeed[] = {{0, "MIN"}, {4*FRACUNIT, "MAX"}, {0, NULL}};
 consvar_t cv_movebob = CVAR_INIT ("movebob", "1.0", CV_FLOAT|CV_SAVE, CV_BobSpeed, NULL);
@@ -3575,26 +3576,29 @@ static boolean P_CameraCheckWater(camera_t *thiscam)
 
 void P_DestroyRobots(void)
 {
-	// Search through all the thinkers for enemies.
-	mobj_t *mo;
-	thinker_t *think;
+    // Search through all the thinkers for enemies.
+    mobj_t *mo;
+    thinker_t *think;
 
-	for (think = thlist[THINK_MOBJ].next; think != &thlist[THINK_MOBJ]; think = think->next)
-	{
-		if (think->function.acp1 == (actionf_p1)P_RemoveThinkerDelayed)
-			continue;
+    for (think = thlist[THINK_MOBJ].next; think != &thlist[THINK_MOBJ]; think = think->next)
+    {
+        if (think->function.acp1 == (actionf_p1)P_RemoveThinkerDelayed)
+            continue;
 
-		mo = (mobj_t *)think;
-		if (mo->health <= 0 || !(mo->flags & (MF_ENEMY|MF_BOSS)))
-			continue; // not a valid enemy
+        mo = (mobj_t *)think;
+        if (mo->health <= 0 || !(mo->flags & (MF_ENEMY|MF_BOSS)))
+			//CONS_Printf("Dead enemy");
+            continue; // not a valid enemy
 
-		if (mo->type == MT_PLAYER) // Don't chase after other players!
-			continue;
+        if (mo->type == MT_PLAYER) // Don't chase after other players!
+            continue;
 
-		// Found a target enemy
-		P_KillMobj(mo, players[consoleplayer].mo, players[consoleplayer].mo, 0);
-	}
+        P_KillMobj(mo, players[consoleplayer].mo, players[consoleplayer].mo, 0);
+
+		CONS_Printf("Dead enemy");
+    }
 }
+
 
 // the below is chasecam only, if you're curious. check out P_CalcPostImg in p_user.c for first person
 void P_CalcChasePostImg(player_t *player, camera_t *thiscam)

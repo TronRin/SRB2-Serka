@@ -28,6 +28,7 @@
 #include "m_misc.h"
 #include "v_video.h" // video flags for CEchos
 #include "f_finale.h"
+#include "rpg.h"
 
 // CTF player names
 #define CTFTEAMCODE(pl) pl->ctfteam ? (pl->ctfteam == 1 ? "\x85" : "\x84") : ""
@@ -375,6 +376,7 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher, boolean heightcheck)
 
 	if ((special->flags & (MF_ENEMY|MF_BOSS)) && !(special->flags & MF_MISSILE))
 	{
+
 		////////////////////////////////////////////////////////
 		/////ENEMIES & BOSSES!!/////////////////////////////////
 		////////////////////////////////////////////////////////
@@ -505,6 +507,13 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher, boolean heightcheck)
 					P_DoPlayerPain(player, special, special);
 			}
 			P_DamageMobj(special, toucher, toucher, 1, 0);
+			//If Enemy Health reaches zero...
+			if (special->health <= 0) 
+			{
+				//... We give player the exp for defeating the Enemy
+				P_GivePlayerExp(toucher, special);
+				CONS_Printf("Enemy Destroyed\n");
+			}
 			if (player->charability == CA_TWINSPIN && player->panim == PA_ABILITY)
 				P_TwinSpinRejuvenate(player, player->thokitem);
 		}
