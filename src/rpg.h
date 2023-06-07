@@ -40,6 +40,9 @@ int P_GetExpRequiredForLevel(int level);
 void P_GivePlayerExp(mobj_t *player, mobj_t *enemy);
 //RPG Player receives Experience
 void P_LevelUp(mobj_t *player); //RPG Player Levels Up from Experience
+
+//RPG Level Up Status Increase
+void P_LevelUpStatusIncrease(mobj_t *player);
 //RPG Checking Player Level
 /*
 //R

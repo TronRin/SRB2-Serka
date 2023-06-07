@@ -7207,7 +7207,8 @@ static void P_NiGHTSMovement(player_t *player)
 	{
 		{
 			const angle_t fa = (FixedAngle(player->flyangle*FRACUNIT)>>ANGLETOFINESHIFT) & FINEMASK;
-			const fixed_t speed = FixedDiv(player->speed*FRACUNIT,50*FRACUNIT);
+			fixed_t speed = FixedDiv(player->speed*FRACUNIT,50*FRACUNIT);
+			//const fixed_t speed = FixedDiv(player->speed*FRACUNIT,50*FRACUNIT);
 
 			xspeed = FixedMul(FINECOSINE(fa),speed);
 			yspeed = FixedMul(FINESINE(fa),speed);
@@ -7451,7 +7452,7 @@ static void P_NiGHTSMovement(player_t *player)
 
 	{
 		const angle_t fa = (FixedAngle(player->flyangle*FRACUNIT)>>ANGLETOFINESHIFT) & FINEMASK;
-		const fixed_t speed = FixedDiv(player->speed*FRACUNIT,50*FRACUNIT);
+		fixed_t speed = FixedDiv(player->speed*FRACUNIT,50*FRACUNIT);
 		xspeed = FixedMul(FINECOSINE(fa),speed);
 		yspeed = FixedMul(FINESINE(fa),speed);
 	}
@@ -13078,11 +13079,31 @@ void P_GivePlayerExp(mobj_t *player, mobj_t *enemy)
 		player_level++;
 		CONS_Printf("You leveled up! Your level is now %d!\n", player_level);
 		player_exp -= P_GetExpRequiredForLevel(player_level);
+		//We call the Status Increase!
+		P_LevelUpStatusIncrease(player);
 	}
 
 	// Update player's experience value
 	player_info->level = player_level;
 	player_info->exp = player_exp;
+}
+//Handling Status Increases with a given level!
+void P_LevelUpStatusIncrease(mobj_t *player)
+{
+	//First Variables, of course.
+
+	int current_level = player->info->level;
+	int current_speed = player->info->speed;
+
+	//Level 2
+	if (current_level == 2)
+	{
+		//Speed +1 which should become 2 as that's the default value.
+		current_speed += 40;
+		CONS_Printf("Your speed is now %d\n", current_speed);
+		// We update Player speeeeeeEEEEEd...
+		player->info->speed = current_speed;
+	}
 }
 
 

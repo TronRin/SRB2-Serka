@@ -345,7 +345,7 @@ typedef struct mobj_s
 	struct mobj_s *hprev;
 
 	mobjtype_t type;
-	const mobjinfo_t *info; // &mobjinfo[mobj->type]
+	mobjinfo_t *info; // &mobjinfo[mobj->type]
 
 	INT32 health; // for player this is rings + 1 -- no it isn't, not any more!!
 
