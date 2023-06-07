@@ -13016,56 +13016,77 @@ boolean P_PlayerShouldUseSpinHeight(player_t *player)
 		|| JUMPCURLED(player));
 }
 
+//==========================================================
 //RPG RELATED STUFF STARTS HERE!//
+//==========================================================
 
 // Define a custom struct for player information
 typedef struct
 {
 int exp; // Experience points
 int level; // Player level
+
 // Add any other player information variables here
 } playerinfo_t;
 
+//==========================================================
 // RPG - Calculation of required EXP for each level
-int P_GetExpRequiredForLevel(int level)
+//==========================================================
+int P_GetExpRequiredForLevel(level)
 {
-if (level <= 1)
-return 0;
+	int exp_required = 5; // Starting exp required to reach level 2
 
-int exp_required = 10; // Starting exp required to reach level 2
+	for (int i = 0; i <= level; i++)
+	{
+		CONS_Printf("Value of i: %d\n", i);
+		CONS_Printf("Value of exp_required: %d\n", exp_required);
+		exp_required = (exp_required * 2); // Increase exp required by 2x of last value
+	}
+	
+	CONS_Printf("Value of level: %d\n", level);
 
-for (int i = 2; i <= level; ++i)
-{
-    exp_required = (int)(exp_required * 2); // Increase exp required by 2x of last value
+	return exp_required;
 }
 
-return exp_required;
-}
-
+//==========================================================
 // RPG - Give Player the sweeet exp!
+//==========================================================
+
 void P_GivePlayerExp(mobj_t *player, mobj_t *enemy)
 {
-if (!enemy || !enemy->info || !(enemy->flags & MF_ENEMY))
-return;
+	if (!enemy || !enemy->info || !(enemy->flags & MF_ENEMY))
+	return;
 
-// Retrieve the experience value from the mobjinfo_t struct
-int enemy_exp = enemy->info->exp;
-playerinfo_t *player_info = (playerinfo_t *)player->info;
-int player_exp = player_info->exp;
+	// Retrieve the experience value from the mobjinfo_t struct
+	playerinfo_t *player_info = (playerinfo_t *)player->info;
+	int enemy_exp = enemy->info->exp;
+	int player_exp = player_info->exp;
+	int levelup_exp = player_info->level+1;
+	int player_level = player_info->level;
+	
+	if (player_exp < 0)
+	{
+		player_exp = 0;
+	}
 
-// Give the player the appropriate amount of experience
-player_exp += enemy_exp;
+	// Give the player the appropriate amount of experience
+	CONS_Printf("You had %d xp!\n", player_exp);
+	player_exp += enemy_exp;
+	CONS_Printf("You got %d xp!\n", enemy_exp);
+	CONS_Printf("Current xp: %d!\n", player_exp);
+	CONS_Printf("Needed for level up: %d!\n", levelup_exp);
 
-// Check if player has leveled up
-while (player_exp >= P_GetExpRequiredForLevel(player_info->level + 1))
-{
-    // Update player's level and experience value
-    player_info->level++;
-    player_exp -= P_GetExpRequiredForLevel(player_info->level);
-}
+	// Check if player has leveled up
+	if (player_exp >= P_GetExpRequiredForLevel(player_level+1))
+	{
+		// Update player's level and experience value
+		player_info->level++;
+		CONS_Printf("You leveled up! Your level is now %d", player_level);
+		player_exp -= P_GetExpRequiredForLevel(player_level-1);
+	}
 
-// Update player's experience value
-player_info->exp = player_exp;
+	// Update player's experience value
+	player_info->exp = player_exp;
 }
 
 
