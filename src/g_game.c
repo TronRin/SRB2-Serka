@@ -49,6 +49,7 @@
 #include "lua_script.h"
 #include "r_fps.h" // frame interpolation/uncapped
 #include "lua_hud.h"
+#include "rpg.h" // RPG STUFF FOR RPG SHIET
 
 gameaction_t gameaction;
 gamestate_t gamestate = GS_NULL;

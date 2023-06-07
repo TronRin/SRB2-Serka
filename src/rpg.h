@@ -27,12 +27,23 @@
 // Needs precompiled tables/data structures.
 #include "info.h"
 
-/////////////////////
-// RPG EXP Handling + LEVEL UP logic//
-////////////////////
+//////////////////////////////////
+//        Stats Defining        //
+//////////////////////////////////
 
 #define MAX_EXP 1000
 #define MAX_LEVEL 100
+
+//////////////////////////////////
+// RPG BattleSystem Defines etc //
+//////////////////////////////////
+
+
+
+
+/////////////////////
+// RPG EXP Handling + LEVEL UP logic//
+////////////////////
 
 //RPG Getting the Exp for a given Level
 int P_GetExpRequiredForLevel(int level);
@@ -58,4 +69,16 @@ void P_PlayerHit(mobj_t *player, mobj_t *enemy)
 //RPG Handle Player Death
 void P_PlayerDeath(mobj_t *player);
 */
+
+//-------------------------------------------------------------//
+//--------------------RPG Battle System------------------------//
+//-------------------------------------------------------------//
+
+
+void P_RPGBattleStart(mobj_t *player, mobj_t *enemy);
+void P_RPGBattleActions()
+//Turn Order Setting
+void P_RPGTurnOrder(boolean *isplayerturn, boolean isenemyturn);
+
+
 #endif

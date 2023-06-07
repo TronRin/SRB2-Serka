@@ -356,11 +356,7 @@ typedef struct botmem_s
 typedef struct player_s
 {
 	mobj_t *mo;
-	// RPG 
-	
-	INT32 level;
-	mobj_t *exp;
-	
+
 	// Caveat: ticcmd_t is ATTRPACK! Be careful what precedes it.
 	ticcmd_t cmd;
 
@@ -509,6 +505,16 @@ typedef struct player_s
 	tic_t starposttime; // Your time when you hit the starpost
 	angle_t starpostangle; // Angle that the starpost is facing - you respawn facing this way
 	fixed_t starpostscale; // Scale of the player; if negative, player is gravflipped
+
+
+	/////////////////
+	// RPG Stuff//
+	/////////////////
+
+	INT32 level;
+	mobj_t *exp;
+	
+	
 
 	/////////////////
 	// NiGHTS Stuff//

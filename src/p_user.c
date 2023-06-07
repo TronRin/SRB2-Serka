@@ -13114,9 +13114,9 @@ void P_LevelUpStatusIncrease(mobj_t *player)
 		CONS_Printf("Your start speed is %d\n", current_speed);
 		//Speed Increase
 		current_speed += 80;
-		CONS_Printf("Your speed is now %d\n", current_speed);
 		// We update Player speeeeeeEEEEEd...
 		player->info->speed = current_speed;
+		CONS_Printf("Your speed is now %d\n", current_speed);
 		
 		//Mass Decrease
 		/*current_mass -= 950;
@@ -13126,18 +13126,19 @@ void P_LevelUpStatusIncrease(mobj_t *player)
 	}
 }
 
-//Jumping Stats Increase
+//Jumping Stats Increase - LMAO NOPE
+/*
 void P_JumpingLevel2(player_t *player)
 {
-	fixed_t factor;
+	//fixed_t factor;
 	int jumpfactor = player->jumpfactor;
 	int player_momz = player->mo->momz;
 	CONS_Printf("Your Start Jumpfactor is %d!\n", jumpfactor);
-	jumpfactor += 40*FRACUNIT;
-	jumpfactor = player->jumpfactor;
+	jumpfactor *= 2;
+	player->jumpfactor = jumpfactor;
 	CONS_Printf("Your Jumpfactor is now! %d\n", jumpfactor);
 }
-
+*/
 
 // RPG Player Leveling up
 /*

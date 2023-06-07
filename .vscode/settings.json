@@ -4,5 +4,7 @@
     "easycode.temperature": 0.1,
     "files.associations": {
         "z_zone.h": "c"
-    }
+    },
+    "cmake.configureOnOpen": false,
+    "C_Cpp.errorSquiggles": "disabled"
 }
