@@ -1756,9 +1756,9 @@ static void SaveMobjThinker(const thinker_t *th, const UINT8 type)
 		diff |= MD_BLUEFLAG;
 
 	//RPG save shite
-	if (mobj->exp)
+	if (mobj->info->exp)
 		diff2 |= MD2_EXP;
-	if (mobj->level)
+	if (mobj->info->level)
 		diff2 |= MD2_LEVEL;
 
 	if (mobj->cusval)
@@ -1969,6 +1969,10 @@ static void SaveMobjThinker(const thinker_t *th, const UINT8 type)
 		WRITEFIXED(save_p, mobj->spritexoffset);
 	if (diff2 & MD2_SPRITEYOFFSET)
 		WRITEFIXED(save_p, mobj->spriteyoffset);
+	if (diff2 & MD2_EXP)
+		WRITEFIXED(save_p, mobj->info->exp);
+	if (diff2 & MD2_LEVEL)
+		WRITEFIXED(save_p, mobj->info->exp);
 	if (diff2 & MD2_FLOORSPRITESLOPE)
 	{
 		pslope_t *slope = mobj->floorspriteslope;

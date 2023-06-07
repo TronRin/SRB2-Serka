@@ -39,6 +39,8 @@ typedef struct
 	INT32 continues;
 	UINT16 emeralds;
 	UINT8 numgameovers;
+	int playerlevel;
+	int currentexp;
 } savedata_t;
 
 extern savedata_t savedata;
