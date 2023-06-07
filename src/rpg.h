@@ -43,7 +43,13 @@ void P_LevelUp(mobj_t *player); //RPG Player Levels Up from Experience
 
 //RPG Level Up Status Increase
 void P_LevelUpStatusIncrease(mobj_t *player);
-//RPG Checking Player Level
+
+
+//-------------------------------------------------------------//
+//--------------Level Increase Status Functions----------------//
+//-------------------------------------------------------------//
+void P_JumpingLevel2(player_t *player);
+
 /*
 //R
 void P_CheckPlayerLevel(mobj_t *player);

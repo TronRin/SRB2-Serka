@@ -13096,14 +13096,46 @@ void P_LevelUpStatusIncrease(mobj_t *player)
 	int current_speed = player->info->speed;
 
 	//Level 2
-	if (current_level == 2)
+	if (current_level == 1)
 	{
-		//Speed +1 which should become 2 as that's the default value.
+		CONS_Printf("Your start speed is %d\n", current_speed);
+		//Speed Increase
 		current_speed += 40;
 		CONS_Printf("Your speed is now %d\n", current_speed);
 		// We update Player speeeeeeEEEEEd...
 		player->info->speed = current_speed;
+		
+		//Jump Increase
+		P_JumpingLevel2(player);
+
 	}
+		if (current_level == 2)
+	{
+		CONS_Printf("Your start speed is %d\n", current_speed);
+		//Speed Increase
+		current_speed += 80;
+		CONS_Printf("Your speed is now %d\n", current_speed);
+		// We update Player speeeeeeEEEEEd...
+		player->info->speed = current_speed;
+		
+		//Mass Decrease
+		/*current_mass -= 950;
+		CONS_Printf("Your mass is now %d\n", current_mass);
+		// We update Player massassassss!.
+		player->info->mass = current_mass;*/
+	}
+}
+
+//Jumping Stats Increase
+void P_JumpingLevel2(player_t *player)
+{
+	fixed_t factor;
+	int jumpfactor = player->jumpfactor;
+	int player_momz = player->mo->momz;
+	CONS_Printf("Your Start Jumpfactor is %d!\n", jumpfactor);
+	jumpfactor += 40*FRACUNIT;
+	jumpfactor = player->jumpfactor;
+	CONS_Printf("Your Jumpfactor is now! %d\n", jumpfactor);
 }
 
 
