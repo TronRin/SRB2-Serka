@@ -3,7 +3,17 @@
     "easycode.copyOnClick": false,
     "easycode.temperature": 0.1,
     "files.associations": {
-        "z_zone.h": "c"
+        "z_zone.h": "c",
+        "doomdef.h": "c",
+        "bit": "c",
+        "compare": "c",
+        "cstddef": "c",
+        "string": "c",
+        "optional": "c",
+        "limits": "c",
+        "memory": "c",
+        "new": "c",
+        "functional": "c"
     },
     "cmake.configureOnOpen": false,
     "C_Cpp.errorSquiggles": "disabled"

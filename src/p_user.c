@@ -50,6 +50,7 @@
 // RPG stuff
 #include "rpg.h"
 #include "info.h"
+#include "d_player.h"
 #ifdef HW3SOUND
 #include "hardware/hw3sound.h"
 #endif
@@ -11467,6 +11468,13 @@ void P_PlayerThink(player_t *player)
 	if (!player->mo)
 		I_Error("p_playerthink: players[%s].mo == NULL", sizeu1(playeri));
 #endif
+	//RPG When BT_CUSTOM is pressed call P_DoCustomDash function to do the move! WHOA!
+	switch (player->cmd.buttons & (BT_CUSTOM1|BT_CUSTOM2|BT_CUSTOM3))
+	{
+    	case BT_CUSTOM1:
+        P_DoCustomDash(player);
+        break;
+	}
 
 	// Reset terrain blocked status for this frame
 	player->blocked = false;
@@ -13106,7 +13114,7 @@ void P_LevelUpStatusIncrease(mobj_t *player)
 		player->info->speed = current_speed;
 		
 		//Jump Increase
-		P_JumpingLevel2(player);
+		//P_JumpingLevel2(player);
 
 	}
 		if (current_level == 2)
@@ -13124,6 +13132,91 @@ void P_LevelUpStatusIncrease(mobj_t *player)
 		// We update Player massassassss!.
 		player->info->mass = current_mass;*/
 	}
+}
+
+//p_user.c
+
+#define CUSTOM_DASH_DISTANCE (64*FRACUNIT) // Change this to adjust the dash distance
+void P_DoCustomDash(player_t *player)
+{
+
+	if (player->pflags & (PF_SPINNING|PF_BOUNCING))
+	return; // Can't dash while spinning or bouncing
+
+//if (!(player->pflags & (PF_JUMPED)))
+   // return; // Can only dash while moving or jumping
+
+if (player->pflags & PF_JUMPED)
+{
+    // Air dash
+    //P_SetPlayerMobjState(player->mo, S_PLAY_SPINDASH);
+    player->mo->momz = 0;
+    player->mo->momx = FixedMul(player->dashspeed, FINECOSINE(player->mo->angle >> ANGLETOFINESHIFT));
+    player->mo->momy = FixedMul(player->dashspeed, FINESINE(player->mo->angle >> ANGLETOFINESHIFT));
+}
+else
+{
+    // Ground dash
+    P_SetPlayerMobjState(player->mo, S_PLAY_SPINDASH);
+    player->mo->momx = FixedMul(player->dashspeed, P_MobjFlip(player->mo) * FINECOSINE(player->mo->angle >> ANGLETOFINESHIFT));
+    player->mo->momy = FixedMul(player->dashspeed, FINESINE(player->mo->angle >> ANGLETOFINESHIFT));
+}
+/*
+player->dashdistance = CUSTOM_DASH_DISTANCE;
+player->dashcountdown = player->ticsperframe;
+player->pflags |= PF_SPINNING;
+player->pflags &= ~(PF_STARTJUMP|PF_JUMPED|PF_BOUNCING);
+player->secondjump = 0;
+player->pjumptime = 0;
+player->pfalltime = 0;
+player->pflags &= ~PF_THOKKED;
+player->pflags &= ~PF_SHIELDABILITY;
+player->pflags &= ~PF_INVULNERABLE;
+player->powers[pw_invulnerability] = 0;
+player->powers[pw_shield] = SH_NONE;
+player->powers[pw_tailsfly] = 0;
+player->powers[pw_speed] = 0;
+player->powers[pw_super] = 0;
+player->powers[pw_flight] = 0;
+player->powers[pw_water] = 0;
+player->powers[pw_fire] = 0;
+player->powers[pw_lightning] = 0;
+player->powers[pw_shield] = SH_NONE;
+player->powers[pw_sneakers] = 0;
+player->powers[pw_invulnerability] = 0;
+player->powers[pw_glasses] = 0;
+player->powers[pw_limitedflight] = 0;
+player->powers[pw_nights] = 0;
+player->powers[pw_nightscharge] = 0;
+player->powers[pw_nightsdash] = 0;
+player->powers[pw_nightsslow] = 0;
+player->powers[pw_nightspower] = 0;
+player->powers[pw_nightsspeed] = 0;
+player->powers[pw_nightsshield] = 0;
+player->powers[pw_nightswirl] = 0;
+player->powers[pw_nightssonic] = 0;
+player->powers[pw_nightssoniccharge] = 0;
+player->powers[pw_nightssonicdash] = 0;
+player->powers[pw_nightssonicslow] = 0;
+player->powers[pw_nightssonicpower] = 0;
+player->powers[pw_nightssonicspeed] = 0;
+player->powers[pw_nightssonicshield] = 0;
+player->powers[pw_nightssonicswirl] = 0;
+player->powers[pw_nightssonicjump] = 0;
+player->powers[pw_nightssonicbounce] = 0;
+player->powers[pw_nightssonicfloat] = 0;
+player->powers[pw_nightssonicflight] = 0;
+player->powers[pw_nightssonicdoublejump] = 0;
+player->powers[pw_nightssonicdashjump] = 0;
+player->powers[pw_nightssonicdashbounce] = 0;
+player->powers[pw_nightssonicdashfloat] = 0;
+player->powers[pw_nightssonicdashflight] = 0;
+player->powers[pw_nightssonicdashdoublejump] = 0;
+player->powers[pw_nightssonicdashjumpbounce] = 0;
+player->powers[pw_nightssonicdashjumpfloat] = 0;
+player->powers[pw_nightssonicdashjumpflight] = 0;
+player->powers[pw_nightssonicdashjumpdoublejump] = 0;
+*/
 }
 
 //Jumping Stats Increase - LMAO NOPE

@@ -74,11 +74,14 @@ void P_PlayerDeath(mobj_t *player);
 //--------------------RPG Battle System------------------------//
 //-------------------------------------------------------------//
 
+//Custom Dash
+void P_DoCustomDash(player_t *player);
 
-void P_RPGBattleStart(mobj_t *player, mobj_t *enemy);
-void P_RPGBattleActions()
+
+//void P_RPGBattleStart(mobj_t *player, mobj_t *enemy);
+//oid P_RPGBattleActions();
 //Turn Order Setting
-void P_RPGTurnOrder(boolean *isplayerturn, boolean isenemyturn);
+//void P_RPGTurnOrder(boolean *isplayerturn, boolean isenemyturn);
 
 
 #endif

@@ -589,6 +589,17 @@ typedef struct player_s
 #endif
 } player_t;
 
+typedef struct rpgplyr_s
+{
+	//RPG SHITE
+	//PF_CUSTOMABILITY =; //RPG Custom Ability... I GUESS?!
+	//PF_MOVELEFT;      //RPG CUSTOM AB thing 2
+	//PF_MOVERIGHT;     //RPG CUSTOM AB THIIIING
+
+
+
+} rpgplyr_t;
+
 // Values for dashmode
 #define DASHMODE_THRESHOLD (3*TICRATE)
 #define DASHMODE_MAX (DASHMODE_THRESHOLD + 3)
